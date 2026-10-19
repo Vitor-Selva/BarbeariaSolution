@@ -1,0 +1,19 @@
+name: app-barbearia
+
+services:
+  api:
+    build: ./BarbeariaAPI
+    container_name: barbearia-api
+    image: app-barbearia
+    ports:
+      - "10000:10000"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Default: ${ConnectionStrings__Default}
+    develop:
+      watch:
+        - action: rebuild
+          path: ./BarbeariaAPI
+          ignore:
+            - bin/
+            - obj/
