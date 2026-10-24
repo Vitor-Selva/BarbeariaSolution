@@ -1,3 +1,4 @@
+using BarbeariaAPI.DAOs;
 using BarbeariaAPI.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,8 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IServicoDao, ServicoDao>();
 
 var app = builder.Build();
 
@@ -19,6 +22,6 @@ app.UseHttpsRedirection();
 
 app.MapGet("/", () => new { Mensagem = "API Funcionando" });
 
-app.MapGet("/health", () => Results.Ok("ok"));
+app.MapGet("/health", () => Results.Ok("Api Funcionando"));
 
 app.Run();
