@@ -14,6 +14,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IServicoDao, ServicoDao>();
 builder.Services.AddScoped<IServicoService, ServicoService>();
+builder.Services.AddScoped<IAgendamentoDao, AgendamentoDao>();
+builder.Services.AddScoped<IAgendamentoService, AgendamentoService>();
 builder.Services.AddExceptionHandler<ApiExceptionHandler>();
 builder.Services.AddProblemDetails();
 
