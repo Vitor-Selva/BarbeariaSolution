@@ -1,5 +1,6 @@
 using BarbeariaAPI.DAOs;
 using BarbeariaAPI.Data;
+using BarbeariaAPI.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IServicoDao, ServicoDao>();
+builder.Services.AddScoped<IServicoService, ServicoService>();
 
 var app = builder.Build();
 
