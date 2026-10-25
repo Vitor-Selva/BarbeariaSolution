@@ -6,11 +6,23 @@ namespace BarbeariaAPI.DAOs;
 
 public class AgendamentoDao(AppDbContext context) : IAgendamentoDao
 {
-    public async Task<(IReadOnlyList<Agendamento> Itens, int Total)> ListarAsync(int pagina, int tamanho)
+    public async Task<(IReadOnlyList<Agendamento> Itens, int Total)> ListarAsync(
+        int? usuarioId, DateTime? de, DateTime? ate, int pagina, int tamanho)
     {
         var query = context.Agendamentos.AsNoTracking();
 
+        if (usuarioId is not null)
+            query = query.Where(a => a.UsuarioId == usuarioId);
+
+        // Intervalo [de, ate): o início é inclusivo e o fim é exclusivo.
+        if (de is not null)
+            query = query.Where(a => a.DataHora >= de);
+
+        if (ate is not null)
+            query = query.Where(a => a.DataHora < ate);
+
         var total = await query.CountAsync();
+        // ... Include, OrderBy, Skip, Take e retorno continuam como estavam
 
         var itens = await query
             .Include(a => a.Servico)

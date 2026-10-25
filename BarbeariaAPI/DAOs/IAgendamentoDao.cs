@@ -4,7 +4,8 @@ namespace BarbeariaAPI.DAOs;
 
 public interface IAgendamentoDao
 {
-    Task<(IReadOnlyList<Agendamento> Itens, int Total)> ListarAsync(int pagina, int tamanho);
+    Task<(IReadOnlyList<Agendamento> Itens, int Total)> ListarAsync(
+    int? usuarioId, DateTime? de, DateTime? ate, int pagina, int tamanho);
     Task<Agendamento?> ObterPorIdAsync(int id);
     Task<Agendamento> AdicionarAsync(Agendamento agendamento);
     Task AtualizarAsync(Agendamento agendamento);

@@ -8,8 +8,7 @@ public class AgendamentoRequest
     [Range(1, int.MaxValue, ErrorMessage = "O serviço é obrigatório.")]
     public int ServicoId { get; set; }
 
-    // Só é usado na criação. No PUT o cliente do agendamento não muda.
-    [Range(1, int.MaxValue, ErrorMessage = "O usuário é obrigatório.")]
+    // Só é usado na criação (o service responde 404 se não existir). No PUT é ignorado.
     public int UsuarioId { get; set; }
 
     // Deve vir em UTC (ex.: 2026-11-03T14:00:00Z). O service valida o Kind.
