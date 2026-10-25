@@ -32,6 +32,6 @@ app.MapControllers();
 
 app.MapGet("/", () => new { Mensagem = "API Funcionando" });
 
-app.MapGet("/health", () => Results.Ok("Api Funcionando"));
+app.MapGet("/health", () => Results.Ok("Healthy"));
 
 app.Run();
