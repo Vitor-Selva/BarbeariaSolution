@@ -18,6 +18,8 @@ builder.Services.AddScoped<IAgendamentoDao, AgendamentoDao>();
 builder.Services.AddScoped<IAgendamentoService, AgendamentoService>();
 builder.Services.AddExceptionHandler<ApiExceptionHandler>();
 builder.Services.AddProblemDetails();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -29,8 +31,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.MapControllers();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.MapGet("/", () => new { Mensagem = "API Funcionando" });
 
