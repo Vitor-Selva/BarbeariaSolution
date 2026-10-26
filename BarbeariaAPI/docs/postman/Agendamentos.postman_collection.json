@@ -1,0 +1,263 @@
+{
+  "info": {
+    "_postman_id": "75b37600-d909-4a9e-95ed-2ee86b80078d",
+    "name": "Agendamentos",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "48783933",
+    "_collection_link": "https://go.postman.co/collection/48783933-75b37600-d909-4a9e-95ed-2ee86b80078d?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "PostAgendamento",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"servicoId\": 2, \n    \"usuarioId\": 1,\n    \"dataHora\": \"2026-11-03T14:00:00Z\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/agendamentos",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "agendamentos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Post409",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"servicoId\": 2, \r\n    \"usuarioId\": 1,\r\n    \"dataHora\": \"2026-11-03T14:15:00Z\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/agendamentos",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "agendamentos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PostEncostar",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"servicoId\": 2, \r\n    \"usuarioId\": 1,\r\n    \"dataHora\": \"2026-11-03T14:30:00Z\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/agendamentos",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "agendamentos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PostSemZ",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"servicoId\": 2, \r\n    \"usuarioId\": 1,\r\n    \"dataHora\": \"2026-11-03T14:30:00\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/agendamentos",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "agendamentos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PostDadosInexistentes",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"servicoId\": 99999999, \r\n    \"usuarioId\": 99999999,\r\n    \"dataHora\": \"2026-11-03T14:30:00Z\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/agendamentos",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "agendamentos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PutComMesmoHorario",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"servicoId\": 2, \r\n    \"usuarioId\": 1,\r\n    \"dataHora\": \"2026-11-03T14:00:00Z\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/agendamentos/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "agendamentos",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetWithQP",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5260/api/agendamentos?data=2026-11-03&usuarioId=1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "agendamentos"
+          ],
+          "query": [
+            {
+              "key": "data",
+              "value": "2026-11-03"
+            },
+            {
+              "key": "usuarioId",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DeleteAgendamento",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5260/api/agendamentos/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "agendamentos",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetById",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5260/api/agendamentos/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "agendamentos",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -1,0 +1,237 @@
+{
+  "info": {
+    "_postman_id": "093d0c54-83c2-4273-a697-d668507e2f78",
+    "name": "Servicos",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "48783933",
+    "_collection_link": "https://go.postman.co/collection/48783933-093d0c54-83c2-4273-a697-d668507e2f78?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "PostServico",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nome\": \"Corte\",\r\n    \"descricao\": \"Corte masculino\",\r\n    \"preco\": 35.00,\r\n    \"duracaoMinutos\": 30\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/servicos",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "servicos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetAll",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5260/api/servicos",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "servicos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetWithQP",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5260/api/servicos?busca=corte&pagina=1&tamanho=5",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "servicos"
+          ],
+          "query": [
+            {
+              "key": "busca",
+              "value": "corte"
+            },
+            {
+              "key": "pagina",
+              "value": "1"
+            },
+            {
+              "key": "tamanho",
+              "value": "5"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetById",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5260/api/servicos/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "servicos",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PutServico",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nome\": \"Corte\",\r\n    \"descricao\": \"Corte masculino\",\r\n    \"preco\": 34.00,\r\n    \"duracaoMinutos\": 29\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/servicos/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "servicos",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetNotFound",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5260/api/servicos/9999",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "servicos",
+            "9999"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PostIncomplete",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"preco\": 0\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/servicos",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "servicos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5260/api/servicos/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "servicos",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DeleteServicoPendente409",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5260/api/servicos/2",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "servicos",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
