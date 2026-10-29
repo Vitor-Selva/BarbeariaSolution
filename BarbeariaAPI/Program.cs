@@ -16,7 +16,6 @@ if (string.IsNullOrWhiteSpace(jwtKey) || Encoding.UTF8.GetByteCount(jwtKey) < 32
         "Jwt:Key ausente ou com menos de 32 caracteres. Defina nos user-secrets ou na variável Jwt__Key.");
 
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -58,20 +57,28 @@ var app = builder.Build();
 
 app.UseExceptionHandler();
 
+// Em produção o Render termina o HTTPS e a API só escuta HTTP; o redirecionamento ficaria sem porta HTTPS.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseHttpsRedirection();
 }
 
-app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.UseSwagger();
 app.UseSwaggerUI();
 
+// SHA do commit em execução. O Render define RENDER_GIT_COMMIT no deploy; localmente a variável não existe.
+var commit = Environment.GetEnvironmentVariable("RENDER_GIT_COMMIT");
+if (string.IsNullOrWhiteSpace(commit))
+    commit = "desconhecido";
+
 app.MapGet("/", () => new { Mensagem = "API Funcionando" });
 
 app.MapGet("/health", () => Results.Ok("Healthy"));
+
+// Público (sem [Authorize]) e responde application/json.
+app.MapGet("/api/versao", () => Results.Ok(new { commit }));
 
 app.Run();
