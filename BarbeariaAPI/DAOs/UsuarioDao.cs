@@ -1,6 +1,8 @@
 using BarbeariaAPI.Data;
 using BarbeariaAPI.Entities;
 using Microsoft.EntityFrameworkCore;
+using BarbeariaAPI.Exceptions;
+using Npgsql;
 
 namespace BarbeariaAPI.DAOs;
 
@@ -16,7 +18,15 @@ public class UsuarioDao(AppDbContext context) : IUsuarioDao
     public async Task<Usuario> AdicionarAsync(Usuario usuario)
     {
         context.Usuarios.Add(usuario);
-        await context.SaveChangesAsync();
+        try
+        {
+            await context.SaveChangesAsync();
+        }
+        // Corrida no registro: dois pedidos passaram pela checagem e o índice único barrou o segundo.
+        catch (DbUpdateException ex) when (ex.InnerException is PostgresException { SqlState: PostgresErrorCodes.UniqueViolation })
+        {
+            throw new ConflitoException("E-mail já cadastrado.");
+        }
         return usuario; // já com o Id gerado pelo banco
     }
 }

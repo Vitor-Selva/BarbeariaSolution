@@ -10,10 +10,13 @@ public class AgendamentoService(IAgendamentoDao dao) : IAgendamentoService
     private const int TamanhoMaximo = 50;
 
     public async Task<PaginatedResponse<AgendamentoResponse>> ListarAsync(
-        int? usuarioId, DateTime? data, int pagina, int tamanho)
+        int solicitanteId, bool ehAdmin, int? usuarioId, DateTime? data, int pagina, int tamanho)
     {
         pagina = Math.Max(1, pagina);
         tamanho = Math.Clamp(tamanho, 1, TamanhoMaximo);
+
+        // Cliente lista só os próprios (o filtro usuarioId é ignorado); admin pode filtrar por qualquer usuário.
+        var filtroUsuario = ehAdmin ? usuarioId : solicitanteId;
 
         // O filtro por data cobre o dia inteiro em UTC. O Kind precisa ser Utc para o Npgsql aceitar.
         DateTime? de = null, ate = null;
@@ -23,7 +26,7 @@ public class AgendamentoService(IAgendamentoDao dao) : IAgendamentoService
             ate = de.Value.AddDays(1);
         }
 
-        var (itens, total) = await dao.ListarAsync(usuarioId, de, ate, pagina, tamanho);
+        var (itens, total) = await dao.ListarAsync(filtroUsuario, de, ate, pagina, tamanho);
 
         return new PaginatedResponse<AgendamentoResponse>
         {
@@ -34,36 +37,33 @@ public class AgendamentoService(IAgendamentoDao dao) : IAgendamentoService
         };
     }
 
-    public async Task<AgendamentoResponse> ObterPorIdAsync(int id)
-    {
-        var agendamento = await dao.ObterPorIdAsync(id)
-            ?? throw new NaoEncontradoException("Agendamento não encontrado.");
+    public async Task<AgendamentoResponse> ObterPorIdAsync(int solicitanteId, bool ehAdmin, int id) =>
+        AgendamentoResponse.FromEntity(await ObterAcessivelAsync(solicitanteId, ehAdmin, id));
 
-        return AgendamentoResponse.FromEntity(agendamento);
-    }
-
-    public async Task<AgendamentoResponse> CriarAsync(AgendamentoRequest request)
+    public async Task<AgendamentoResponse> CriarAsync(int solicitanteId, AgendamentoRequest request)
     {
         Validar(request);
 
         var duracao = await dao.ObterDuracaoServicoAsync(request.ServicoId)
             ?? throw new NaoEncontradoException("Serviço não encontrado.");
 
-        if (!await dao.UsuarioExisteAsync(request.UsuarioId))
+        // Cobre token válido de um usuário que já foi apagado do banco.
+        if (!await dao.UsuarioExisteAsync(solicitanteId))
             throw new NaoEncontradoException("Usuário não encontrado.");
 
         await GarantirSemConflitoAsync(request.DataHora, duracao, ignorarId: null);
 
-        var criado = await dao.AdicionarAsync(request.ToEntity());
+        // O dono é sempre quem está logado, inclusive quando é admin.
+        var criado = await dao.AdicionarAsync(request.ToEntity(solicitanteId));
         return AgendamentoResponse.FromEntity(criado);
     }
 
-    public async Task<AgendamentoResponse> AtualizarAsync(int id, AgendamentoRequest request)
+    public async Task<AgendamentoResponse> AtualizarAsync(
+        int solicitanteId, bool ehAdmin, int id, AgendamentoRequest request)
     {
         Validar(request);
 
-        var existente = await dao.ObterPorIdAsync(id)
-            ?? throw new NaoEncontradoException("Agendamento não encontrado.");
+        var existente = await ObterAcessivelAsync(solicitanteId, ehAdmin, id);
 
         var duracao = await dao.ObterDuracaoServicoAsync(request.ServicoId)
             ?? throw new NaoEncontradoException("Serviço não encontrado.");
@@ -72,7 +72,7 @@ public class AgendamentoService(IAgendamentoDao dao) : IAgendamentoService
         await GarantirSemConflitoAsync(request.DataHora, duracao, ignorarId: id);
 
         // Entidade limpa, sem Servico/Usuario: o Update não arrasta as navegações do Include.
-        // O UsuarioId é mantido; reagendar não troca o cliente.
+        // O UsuarioId original é mantido (inclusive quando o admin reagenda): reagendar não troca o cliente.
         await dao.AtualizarAsync(new Agendamento
         {
             Id = id,
@@ -88,12 +88,21 @@ public class AgendamentoService(IAgendamentoDao dao) : IAgendamentoService
         return AgendamentoResponse.FromEntity(atualizado);
     }
 
-    public async Task RemoverAsync(int id)
+    public async Task RemoverAsync(int solicitanteId, bool ehAdmin, int id)
     {
-        _ = await dao.ObterPorIdAsync(id)
-            ?? throw new NaoEncontradoException("Agendamento não encontrado.");
-
+        _ = await ObterAcessivelAsync(solicitanteId, ehAdmin, id);
         await dao.RemoverAsync(id);
+    }
+
+    // 404 também para agendamento alheio: não revela que o id existe.
+    private async Task<Agendamento> ObterAcessivelAsync(int solicitanteId, bool ehAdmin, int id)
+    {
+        var agendamento = await dao.ObterPorIdAsync(id);
+
+        if (agendamento is null || (!ehAdmin && agendamento.UsuarioId != solicitanteId))
+            throw new NaoEncontradoException("Agendamento não encontrado.");
+
+        return agendamento;
     }
 
     private async Task GarantirSemConflitoAsync(DateTime inicio, int duracaoMinutos, int? ignorarId)

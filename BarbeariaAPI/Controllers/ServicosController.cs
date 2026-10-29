@@ -1,5 +1,7 @@
 using BarbeariaAPI.DTOs;
+using BarbeariaAPI.Entities;
 using BarbeariaAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BarbeariaAPI.Controllers;
@@ -8,6 +10,7 @@ namespace BarbeariaAPI.Controllers;
 [Route("api/[controller]")]
 public class ServicosController(IServicoService service) : ControllerBase
 {
+    // GET públicos: o catálogo pode ser consultado sem login.
     [HttpGet]
     public async Task<ActionResult<PaginatedResponse<ServicoResponse>>> Listar(
         [FromQuery] string? busca, [FromQuery] int pagina = 1, [FromQuery] int tamanho = 10)
@@ -18,6 +21,7 @@ public class ServicosController(IServicoService service) : ControllerBase
         => Ok(await service.ObterPorIdAsync(id));
 
     [HttpPost]
+    [Authorize(Roles = Papeis.Admin)]
     public async Task<ActionResult<ServicoResponse>> Criar(ServicoRequest request)
     {
         var criado = await service.CriarAsync(request);
@@ -25,10 +29,12 @@ public class ServicosController(IServicoService service) : ControllerBase
     }
 
     [HttpPut("{id:int}")]
+    [Authorize(Roles = Papeis.Admin)]
     public async Task<ActionResult<ServicoResponse>> Atualizar(int id, ServicoRequest request)
         => Ok(await service.AtualizarAsync(id, request));
 
     [HttpDelete("{id:int}")]
+    [Authorize(Roles = Papeis.Admin)]
     public async Task<IActionResult> Remover(int id)
     {
         await service.RemoverAsync(id);
