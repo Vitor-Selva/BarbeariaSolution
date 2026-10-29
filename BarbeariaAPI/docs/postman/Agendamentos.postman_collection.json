@@ -10,6 +10,16 @@
     {
       "name": "PostAgendamento",
       "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0p1c}}",
+              "type": "string"
+            }
+          ]
+        },
         "method": "POST",
         "header": [
           {
@@ -19,7 +29,51 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"servicoId\": 2, \n    \"usuarioId\": 1,\n    \"dataHora\": \"2026-11-03T14:00:00Z\"\n}",
+          "raw": "{\n    \"servicoId\": 3, \n    \"usuarioId\": 2,\n    \"dataHora\": \"2026-12-03T14:00:00Z\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/agendamentos",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "agendamentos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PostAgendamentoPrimeiroCliente",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0unu}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"servicoId\": 3, \n    \"usuarioId\": 2,\n    \"dataHora\": \"2026-11-03T14:00:00Z\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -188,6 +242,46 @@
       "response": []
     },
     {
+      "name": "PutAdminPrimeiroCliente",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_03sj}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"servicoId\": 3, \r\n    \"dataHora\": \"2026-11-03T15:00:00Z\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/agendamentos/3",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "agendamentos",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "GetWithQP",
       "request": {
         "method": "GET",
@@ -258,6 +352,288 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "GetComTokenErrado",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0p22}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5260/api/agendamentos",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "agendamentos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PostComTokenSemUsuarioId",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0xwk}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"servicoId\": 3, \r\n    \"dataHora\": \"2026-11-03T14:00:00Z\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/agendamentos",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "agendamentos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PostComTokenComUsuarioId",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"servicoId\": 2, \r\n    \"usuarioId\": 999,\r\n    \"dataHora\": \"2026-11-03T18:00:00Z\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "AgendamentoPrimeiroCliente/TokenCliente2",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0oac}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5260/api/agendamentos/3",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "agendamentos",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PutAgendamentoPrimeiroCliente/TokenCliente2",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0oac}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"servicoId\": 3,\r\n    \"dataHora\": \"2026-12-20T15:00:00Z\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/agendamentos/3",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "agendamentos",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DeleteAgendamentoPrimeiroCliente/TokenCliente2 Copy",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0oac}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5260/api/agendamentos/3",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "agendamentos",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DeleteAgendamentoPrimeiroCliente/TokenCliente2 Copy 2",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_1a7c}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5260/api/agendamentos/5",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "agendamentos",
+            "5"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetAllAdmin",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_03sj}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5260/api/agendamentos",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "agendamentos"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "json_web_token_0p22",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_0xwk",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_0oac",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_0unu",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_0p1c",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_03sj",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_1a7c",
+      "secret": true
     }
   ]
 }

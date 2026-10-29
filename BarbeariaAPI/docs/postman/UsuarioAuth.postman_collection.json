@@ -1,0 +1,295 @@
+{
+  "info": {
+    "_postman_id": "a2334c37-395d-4ad9-9864-b9801fdbf264",
+    "name": "UsuarioAuth",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "48783933",
+    "_collection_link": "https://go.postman.co/collection/48783933-a2334c37-395d-4ad9-9864-b9801fdbf264?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nome\": \"PrimeiroTeste\",\r\n    \"email\": \"primeiroteste@gmail.com\",\r\n    \"senha\": \"primeiroteste123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/auth/registro",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "auth",
+            "registro"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "RegisterCliente2",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nome\": \"Cliente2\",\r\n    \"email\": \"cliente2@gmail.com\",\r\n    \"senha\": \"clente2123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/auth/registro",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "auth",
+            "registro"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"primeiroteste@gmail.com\",\r\n  \"senha\": \"primeiroteste123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "RegisterNormalizationTest",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nome\": \"PrimeiroTeste\",\r\n    \"email\": \" primeiroTeste@gmail.com\",\r\n    \"senha\": \"primeiroteste123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/auth/registro",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "auth",
+            "registro"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "RegisterPasswotd3",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nome\": \"SegudnoTeste\",\r\n    \"email\": \"segundoteste@gmail.com\",\r\n    \"senha\": \"123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/auth/registro",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "auth",
+            "registro"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "LoginEmailErrado",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"primeirotesteERRADO@gmail.com\",\r\n  \"senha\": \"primeiroteste123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "LoginSenhaErrada",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"primeiroteste@gmail.com\",\r\n  \"senha\": \"primeiroteste12\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "RegistraAdmin",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"nome\": \"Administrador\",\r\n  \"email\": \"admin@barbearia.example.com\",\r\n  \"senha\": \"admin123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/auth/registro",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "auth",
+            "registro"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "LoginNovoAdmin",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"admin@barbearia.example.com\",\r\n  \"senha\": \"admin123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5260/api/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5260",
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "json_web_token_09vm",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_1bur",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_0oac",
+      "secret": true
+    }
+  ]
+}
