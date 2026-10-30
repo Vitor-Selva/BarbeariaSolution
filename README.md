@@ -114,3 +114,38 @@ Não foi desenvolvido nesta entrega: o projeto contém apenas a API. Toda a inte
 - O `__` nas variáveis de ambiente equivale ao `:` da configuração do .NET, e segredos ficam fora do repositório.
 - O SHA do commit em produção prova qual versão está rodando, e o CI verde prova que esse mesmo commit compila.
 - Como funciona um merge no Git e como resolver um conflito.
+
+## Banco de dados
+
+O banco de dados utiliza a entidade **Agendamentos** como intermediária para relacionar os usuários aos serviços oferecidos, seguindo a regra:
+- **1 para N (Usuários ↔ Agendamentos):** Um usuário pode fazer vários agendamentos, mas cada agendamento pertence a um único usuário.
+- **1 para N (Serviços ↔ Agendamentos):** Um serviço pode ser agendado várias vezes, mas cada agendamento contém apenas um serviço.
+
+### Diagrama Entidade-Relacionamento
+
+```mermaid
+erDiagram
+    Usuarios ||--o{ Agendamentos : "realiza"
+    Servicos ||--o{ Agendamentos : "agendado em"
+
+    Usuarios {
+        int id PK
+        string nome
+        string email
+    }
+
+    Servicos {
+        int id PK
+        string nome
+        decimal preco
+    }
+
+    Agendamentos {
+        int id PK
+        int usuario_id FK
+        int servico_id FK
+        datetime data_hora
+    }
+```
+
+**Regra do erro 409:** Ocorre conflito (HTTP 409) caso se tente registar um e-mail já existente, ao criar um agendamento num horário já ocupado, ou ao tentar eliminar um serviço que ainda possua agendamentos associados.
