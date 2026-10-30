@@ -117,35 +117,39 @@ Não foi desenvolvido nesta entrega: o projeto contém apenas a API. Toda a inte
 
 ## Banco de dados
 
-O banco de dados utiliza a entidade **Agendamentos** como intermediária para relacionar os usuários aos serviços oferecidos, seguindo a regra:
-- **1 para N (Usuários ↔ Agendamentos):** Um usuário pode fazer vários agendamentos, mas cada agendamento pertence a um único usuário.
-- **1 para N (Serviços ↔ Agendamentos):** Um serviço pode ser agendado várias vezes, mas cada agendamento contém apenas um serviço.
+O banco de dados utiliza a entidade **Agendamento** como intermediária para relacionar os usuários aos serviços oferecidos, seguindo a regra:
+- **1 para N (Usuario ↔ Agendamento):** Um usuário pode ter vários agendamentos, mas cada agendamento pertence a um único usuário.
+- **1 para N (Servico ↔ Agendamento):** Um serviço pode ter vários agendamentos, mas cada agendamento contém apenas um serviço.
 
 ### Diagrama Entidade-Relacionamento
 
 ```mermaid
 erDiagram
-    Usuarios ||--o{ Agendamentos : "realiza"
-    Servicos ||--o{ Agendamentos : "agendado em"
+    Usuario ||--o{ Agendamento : "realiza"
+    Servico ||--o{ Agendamento : "agendado em"
 
-    Usuarios {
-        int id PK
-        string nome
-        string email
+    Usuario {
+        int Id PK
+        string Nome
+        string Email
+        string SenhaHash
+        string Role
     }
 
-    Servicos {
-        int id PK
-        string nome
-        decimal preco
+    Servico {
+        int Id PK
+        string Nome
+        string Descricao
+        decimal Preco
+        int DuracaoMinutos
     }
 
-    Agendamentos {
-        int id PK
-        int usuario_id FK
-        int servico_id FK
-        datetime data_hora
+    Agendamento {
+        int Id PK
+        DateTime DataHora
+        int ServicoId FK
+        int UsuarioId FK
     }
 ```
 
-**Regra do erro 409:** Ocorre conflito (HTTP 409) caso se tente registar um e-mail já existente, ao criar um agendamento num horário já ocupado, ou ao tentar eliminar um serviço que ainda possua agendamentos associados.
+**Regra do erro 409:** Ocorre conflito (HTTP 409) caso se tente registrar um e-mail já existente, ao criar um agendamento num horário já ocupado, ou ao tentar deletar um serviço que possua agendamentos associados.
