@@ -6,6 +6,7 @@ using BarbeariaAPI.Exceptions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +30,32 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddExceptionHandler<ApiExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "BarbeariaAPI",
+        Version = "v1",
+        Description = "API REST para gerenciar uma barbearia: serviços, agendamentos e autenticação JWT. " +
+                      "AVISO: este é um projeto escolar, desenvolvido apenas para fins de estudo (curso de TADS). " +
+                      "Não utilize dados reais nem este sistema em produção. " +
+                      "Para testar as rotas protegidas: faça login em POST /api/auth/login, copie o token e clique em Authorize."
+    });
+
+    // Scheme "bearer" faz o Swagger UI acrescentar o prefixo "Bearer " sozinho; no botão se cola só o token.
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        Description = "Informe apenas o token JWT, sem o prefixo 'Bearer'."
+    });
+
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+    });
+});
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
