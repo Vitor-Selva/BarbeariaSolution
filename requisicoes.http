@@ -1,0 +1,145 @@
+# Requisições de exemplo da BarbeariaAPI (fluxos felizes e de erro).
+# Execute em ordem, de cima para baixo: algumas usam o resultado das anteriores.
+# Para testar localmente, troque o host por http://localhost:5260
+
+@host = https://barbearia-api-glxg.onrender.com
+@senhaCliente = Cliente@123
+@senhaAdmin = admin123
+
+### 1. Públicos (200)
+GET {{host}}/health
+
+###
+GET {{host}}/api/versao
+
+###
+GET {{host}}/api/servicos?pagina=1&tamanho=10
+
+### 2. Login (200): guarda o token do cliente e do admin
+# @name loginCliente
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "rafael.souza@example.com", "senha": "{{senhaCliente}}" }
+
+###
+# @name loginAdmin
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "admin@barbearia.example.com", "senha": "{{senhaAdmin}}" }
+
+### 3. Registro (201). O e-mail precisa ser novo: troque o número a cada execução
+POST {{host}}/api/auth/registro
+Content-Type: application/json
+
+{ "nome": "Corretor Teste", "email": "corretor.teste1@example.com", "senha": "Teste@123" }
+
+### 4. Fluxo feliz de serviços (admin)
+# Criar (201)
+# @name novoServico
+POST {{host}}/api/servicos
+Authorization: Bearer {{loginAdmin.response.body.$.token}}
+Content-Type: application/json
+
+{ "nome": "Serviço de teste (requisicoes.http)", "descricao": "Criado pelo arquivo de requisições", "preco": 45.00, "duracaoMinutos": 40 }
+
+###
+# Obter (200)
+GET {{host}}/api/servicos/{{novoServico.response.body.$.id}}
+
+###
+# Atualizar (200)
+PUT {{host}}/api/servicos/{{novoServico.response.body.$.id}}
+Authorization: Bearer {{loginAdmin.response.body.$.token}}
+Content-Type: application/json
+
+{ "nome": "Serviço de teste atualizado", "descricao": "Atualizado", "preco": 50.00, "duracaoMinutos": 45 }
+
+### 5. Fluxo feliz de agendamentos (cliente)
+# Criar (201): dataHora futura e em UTC
+# @name agendamento1
+POST {{host}}/api/agendamentos
+Authorization: Bearer {{loginCliente.response.body.$.token}}
+Content-Type: application/json
+
+{ "dataHora": "2027-12-15T14:00:00Z", "servicoId": {{novoServico.response.body.$.id}} }
+
+###
+# Listar os do cliente (200)
+GET {{host}}/api/agendamentos
+Authorization: Bearer {{loginCliente.response.body.$.token}}
+
+### 6. Erros
+# 400: e-mail inválido no registro
+POST {{host}}/api/auth/registro
+Content-Type: application/json
+
+{ "nome": "Fulano", "email": "isso-nao-e-email", "senha": "Teste@123" }
+
+###
+# 400: serviço com nome vazio e preço zero
+POST {{host}}/api/servicos
+Authorization: Bearer {{loginAdmin.response.body.$.token}}
+Content-Type: application/json
+
+{ "nome": "", "descricao": "x", "preco": 0, "duracaoMinutos": 30 }
+
+###
+# 400: agendamento no passado
+POST {{host}}/api/agendamentos
+Authorization: Bearer {{loginCliente.response.body.$.token}}
+Content-Type: application/json
+
+{ "dataHora": "2020-01-01T10:00:00Z", "servicoId": {{novoServico.response.body.$.id}} }
+
+###
+# 401: login com senha errada
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "rafael.souza@example.com", "senha": "SenhaErrada" }
+
+###
+# 401: rota protegida sem token
+GET {{host}}/api/agendamentos
+
+###
+# 403: cliente tentando criar serviço (só admin pode)
+POST {{host}}/api/servicos
+Authorization: Bearer {{loginCliente.response.body.$.token}}
+Content-Type: application/json
+
+{ "nome": "Não deveria criar", "descricao": "x", "preco": 10, "duracaoMinutos": 30 }
+
+###
+# 404: serviço inexistente
+GET {{host}}/api/servicos/999999
+
+###
+# 404: agendamento inexistente
+GET {{host}}/api/agendamentos/999999
+Authorization: Bearer {{loginCliente.response.body.$.token}}
+
+###
+# 409: e-mail já cadastrado
+POST {{host}}/api/auth/registro
+Content-Type: application/json
+
+{ "nome": "Rafael Almeida Souza", "email": "rafael.souza@example.com", "senha": "Cliente@123" }
+
+###
+# 409: mesmo horário do agendamento criado no passo 5
+POST {{host}}/api/agendamentos
+Authorization: Bearer {{loginCliente.response.body.$.token}}
+Content-Type: application/json
+
+{ "dataHora": "2027-12-15T14:00:00Z", "servicoId": {{novoServico.response.body.$.id}} }
+
+### 7. Limpeza (204): remove o agendamento antes do serviço, senão o serviço dá 409
+DELETE {{host}}/api/agendamentos/{{agendamento1.response.body.$.id}}
+Authorization: Bearer {{loginCliente.response.body.$.token}}
+
+###
+DELETE {{host}}/api/servicos/{{novoServico.response.body.$.id}}
+Authorization: Bearer {{loginAdmin.response.body.$.token}}
