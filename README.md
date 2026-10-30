@@ -63,7 +63,11 @@ A listagem de agendamentos também é paginada e aceita `data` e, para admin, `u
 
 ## Contas de teste
 
-Como o repositório está público, optei por adicionar elas no arquivo de envio.
+| Papel | E-mail | Senha |
+|---|---|---|
+| cliente | rafael.souza@example.com | Cliente@123 |
+| cliente | camila.lima@example.com | Cliente@123 |
+| admin | admin@barbearia.example.com | admin123 |
 
 **Como testar no Swagger:** faça login em `POST /api/auth/login` com e-mail e senha, copie o `token` da resposta, clique em **Authorize** e cole só o token.
 
